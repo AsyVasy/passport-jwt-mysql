@@ -38,12 +38,14 @@ La fonction callback permet d'envoyer une reponse, en fonction du statut de l'au
 
 ![](./images/user.service.authenticate.PNG)
 
+La fonction register prend un objet userParam et une fonction callback en parametre.
+Si l'objet userParam n'est pas complet, avec des clés/valeurs demandées, la fonction callback renvois un status false avec un message d'erreur.
+Sinon, un objet newUser est crée avec les informations fournient.
+La fonction db.createUser est appelé pour entrer ce nouvel user en base de données. Cette fonction permet également de verifier si l'email fournit est déjà utilisé.
 ![](./images/user.service.register.PNG)
 
 ![](./images/register.log.server.PNG)
-
 ![](./images/postman.authenticate.response.PNG)
-
 ![](./images/postman.authenticate.response.PNG)
 
 ## Un register user
