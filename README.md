@@ -1,13 +1,18 @@
 # passport-jwt-mysql
 
 Initialisation du projet :
-➜ Git clone https://github.com/qdanneville/passport-jwt-mysql
-➜ npm install
-➜ npm run start-dev
+
+```
+git clone https://github.com/qdanneville/passport-jwt-mysql
+
+npm install
+
+npm run start-dev
+```
 
 ![](./images/arbo)
 
-##Liste des concepts que vous trouverez dans ce projet :
+## Liste des concepts que vous trouverez dans ce projet :
 
 Une authentification user
 ![](./images/user.controller.authenticate.PNG)
@@ -32,6 +37,8 @@ Vérification du token avec passport & jwt-passport pour accéder à certaines r
 
 ## Liste des routes disponibles :
 
-http://localhost:5000/api/users/register
-http://localhost:5000/api/users/authenticate
-http://localhost:5000/api/dashboard
+<http://localhost:5000/api/users/register>
+
+<http://localhost:5000/api/users/authenticate>
+
+<http://localhost:5000/api/dashboard>
