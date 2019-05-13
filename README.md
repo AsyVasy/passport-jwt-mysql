@@ -3,36 +3,60 @@
 Initialisation du projet :
 
 ```
+
 git clone https://github.com/qdanneville/passport-jwt-mysql
 
 npm install
 
 npm run start-dev
+
 ```
 
-![](./images/arbo)
+![](./images/arbo.PNG)
 
-## Liste des concepts que vous trouverez dans ce projet :
+## users.controller.js
 
-Une authentification user
+Ici on déclare les fonctions a executer lorsqu'une méthode est appelé a la route définit.
+
+![](./images/user.controller.routes.PNG)
+
+La fonction authenticate est définit ici, elle appelle la fonction authenticate importé depuis users.service.js est renvoi une reponse.
 ![](./images/user.controller.authenticate.PNG)
-![](./images/user.service.authenticate.PNG)
-![](./images/postman.authenticate.response.PNG)
-![](./images/postman.authenticate.response.PNG)
+
 ![](./images/authenticate.log.server.PNG)
+
+La fonction register est définit ici, elle appelle la fonction register importée depuis users.service.js est renvoi une reponse.
+![](./images/user.controller.register.PNG)
+
+## user.service.js
+
+La fonction authenticate prend un objet contenant un email et un password puis une fonction callback en parametre. Elle utilise l'email fournit avec la fonction db.findUser importer depuis ./app/helpers/db.js pour verifier si les identifiants existent en base de données puis stocks toutes les infos de l'user dans un objet.
+
+Ensuite, elle utilise le password fournit avec la fonction crypt.compareHash, importée depuis ./app/helpers/crypt.js pour décrypter et vérifier si le password est correcte ou non. Si il est correcte, l'user authentifié obtient un token valable pendant 10000 secondes.
+
+La fonction callback permet d'envoyer une reponse, en fonction du statut de l'authentification (success, fail ...)
+
+![](./images/user.service.authenticate.PNG)
+
+![](./images/user.service.register.PNG)
+
+![](./images/register.log.server.PNG)
+
+![](./images/postman.authenticate.response.PNG)
+
+![](./images/postman.authenticate.response.PNG)
 
 ## Un register user
 
-![](./images/user.service.register.PNG)
-![](./images/user.controller.register.PNG)
 ![](./images/postman.register.request.PNG)
 ![](./images/postman.register.response.PNG)
-![](./images/register.log.server.PNG)
 
 ## CreateHash lors du register
 
 CompareHash lors de l’authenticate
+
 Création d’un token JWT lors de l’authenticate
+
 Vérification du token avec passport & jwt-passport pour accéder à certaines routes
 
 ## Liste des routes disponibles :
