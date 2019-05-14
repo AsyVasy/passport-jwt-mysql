@@ -1,3 +1,3 @@
-![](./images/slide/p1.PNG)
+![](./images/slide/p1.png)
 
 # test
