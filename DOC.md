@@ -6,8 +6,11 @@ Initialisation du projet :
 
 git clone https://github.com/AsyVasy/passport-jwt-mysql
 
-import database from ./dbScripts/passport-auth.sql and name it: 'passport-auth'
- 
+```
+
+### import database from ./dbScripts/passport-auth.sql and name it: 'passport-auth'
+
+``` 
 npm install
 
 npm run start-dev
@@ -23,18 +26,39 @@ use postman to test routes
 ## users.controller.js
 
 Ici on déclare les fonctions a exécuter lorsqu'une méthode est appelé a la route défini.
+```javascript
+// routes
+router.post("/authenticate", authenticate);
+router.post("/register", register);
+```
 
-![](./images/user.controller.routes.PNG)
+<!-- ![](./images/user.controller.routes.PNG) -->
 
 La fonction authenticate est défini ici, elle appelle la fonction authenticate importéE depuis users.service.js et renvoi une réponse.
 
-![](./images/user.controller.authenticate.PNG)
+```javascript
+function authenticate(req, res) {
+    userService
+        .authenticate(req.body, result => {
+            result.success ? res.status(201).json(result) : res.status(401).json(result);
+        })
+}
+```
+<!-- ![](./images/user.controller.authenticate.PNG) -->
 
 <!-- ![](./images/authenticate.log.server.PNG) -->
 
 La fonction register est définit ici, elle appelle la fonction register importée depuis users.service.js est renvoi une reponse.
 
-![](./images/user.controller.register.PNG)
+```javascript
+function register(req, res) {
+  userService
+        .register(req.body, result => {
+          result.success ? res.status(201).json(result) : res.status(401).json(result);
+        })
+}
+```
+<!-- ![](./images/user.controller.register.PNG) -->
 
 ## user.service.js
 
@@ -44,14 +68,66 @@ Ensuite, elle utilise le password fournit avec la fonction crypt.compareHash, im
 
 La fonction callback permet d'envoyer une reponse, en fonction du statut de l'authentification (success, fail ...)
 
-![](./images/user.service.authenticate.PNG)
+```javascript
+function authenticate({ email, password }, callback) {
+    db.findUser({
+        email: email
+    }, function (res) {
+        var user = {
+            user_id: res.user_id,
+            user_email: res.user_email,
+            is_active: res.is_active,
+            user_type: res.user_type
+        };
+
+        // Check if password matches
+        crypt.compareHash(password, res.password, function (err, isMatch) {
+            if (isMatch && !err) {
+                // Create token if the password matched and no error was thrown
+                var token = jwt.sign(user, config.secret, {
+                    expiresIn: 10080 // in seconds
+                });
+                return callback({ success: true, token: token });
+            } else {
+                return callback({
+                    success: false,
+                    message: 'Authentication failed. Passwords did not match.'
+                });
+            }
+        });
+    }, function (err) {
+        return callback({ success: false, message: 'Authentication failed. User not found.' });
+    });
+}
+```
+
+<!-- ![](./images/user.service.authenticate.PNG) -->
 
 La fonction register prend un objet userParam et une fonction callback en parametre.
 Si l'objet userParam n'est pas complet, avec des clés/valeurs demandées, la fonction callback renvois un status false avec un message d'erreur.
 Sinon, un objet newUser est crée avec les informations fournient.
 La fonction db.createUser est appelé pour entrer ce nouvel user en base de données. Cette fonction permet également de verifier si l'email fournit est déjà utilisé.
 
-![](./images/user.service.register.PNG)
+```javascript
+function register(userParam, callback) {
+    if (!userParam.email || !userParam.password) {
+        return callback({ success: false, message: 'Please enter email and password.' });
+    } else {
+        var newUser = {
+            email: userParam.email,
+            password: userParam.password
+        };
+
+        // Attempt to save the user
+        db.createUser(newUser, function (res) {
+            return callback({ success: true, message: 'Successfully created new user.' });
+        }, function (err) {
+            return callback({ success: false, message: 'That email address already exists.' });
+        });
+    }
+}
+```
+<!-- ![](./images/user.service.register.PNG) -->
 
 # Exemple d'utilisation des routes avec Postman
 
