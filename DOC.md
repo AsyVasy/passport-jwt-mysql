@@ -6,9 +6,13 @@ Initialisation du projet :
 
 git clone https://github.com/AsyVasy/passport-jwt-mysql
 
+import database from ./dbScripts/passport-auth.sql and name it: 'passport-auth'
+ 
 npm install
 
 npm run start-dev
+
+use postman to test routes
 
 ```
 
