@@ -4,7 +4,7 @@ Initialisation du projet :
 
 ```
 
-git clone https://github.com/qdanneville/passport-jwt-mysql
+git clone https://github.com/AsyVasy/passport-jwt-mysql
 
 npm install
 
